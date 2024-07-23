@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- Based on examples: https://github.com/ading2210/libcurl.js/blob/4d64b27a8293de87d7e39b30685ca17ee9c324a3/client/worker.html
+and https://github.com/ading2210/libcurl.js/blob/4d64b27a8293de87d7e39b30685ca17ee9c324a3/client/index.html -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP request using libcurl.js</title>
+  <script defer src="./out/libcurl.js" onload="libcurl.load_wasm('/out/libcurl.wasm');"></script>
+  <script>
+    document.addEventListener('libcurl_load', () => {
+      (async () => {
+        libcurl.set_websocket(`${location.origin.replace('http', 'ws').replace('8000', '6001')}/`);
+        let res = await libcurl.fetch('https://httpbin.org/anything', { _libcurl_verbose: 1 });
+        console.log(await res.text());
+      })();
+    });
+  </script>
+</head>
+<body>
+<h2>HTTP Request from inside WASM using libcurl.js</h2>
+
+<p>This example employs code from
+  <a href="https://github.com/ading2210/libcurl.js">libcurl.js</a> repo.</p>
+<p>Make sure the server-side part is running and <code>libcurl.set_websocket()</code> argument results to correct WISP server address.</p>
+<p>See the output in browser developer console.</p>
+
+<p>Actual code:</p>
+<pre>
+
+libcurl.set_websocket(`${location.origin.replace('http', 'ws').replace('8000', '6001')}/`);
+let res = await libcurl.fetch('https://httpbin.org/anything', { _libcurl_verbose: 1 });
+console.log(await res.text());
+
+</pre>
+<footer><small>Created for (wannabe-awesome) <a href="https://github.com/vasilev/HTTP-request-from-inside-WASM">list</a></small></footer>
+</body>
+</html>
